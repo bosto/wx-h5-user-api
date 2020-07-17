@@ -1,0 +1,54 @@
+wechat:
+  url-pattern: /cam10/*
+  client:
+    url: https://api.weixin.qq.com
+    appid: ${APPID}
+    secret: ${SECRET}
+
+#redirectPattern: https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirec
+
+
+logbook:
+  exclude:
+    - /health
+    - /admin/**
+  filter.enabled: true
+  format.style: json
+  write:
+    category: org.zalando.logbook.Logbook
+    level: INFO
+    chunk-size: 0
+server:
+  servlet:
+    context-path: /ua
+
+logging:
+  level:
+    org.zalando: ERROR
+    com:
+      bostoli:
+        wechath5lingling:
+          ERROR
+
+spring:
+  #,refreshAfterWrite=7200s
+  cache:
+    type: caffeine
+    cache-names: token,user
+    caffeine:
+      spec: initialCapacity=50,maximumSize=500,expireAfterWrite=1d
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?characterEncoding=UTF-8
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: MYSQL
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
